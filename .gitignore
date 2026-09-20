@@ -1,0 +1,24 @@
+# secrets
+.env
+.env.*
+!.env.example
+credentials.json
+*.pem
+*.key
+service-account*.json
+
+# dependencies / build
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.pyc
+dist/
+build/
+.DS_Store
+
+# runtime logs & screenshots
+logs/
+
+# personal configuration
+config.js
