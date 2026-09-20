@@ -1,8 +1,13 @@
-# Trash-automation
+# open311-fallback
 
-Keep this outside `~/Documents`: macOS blocks launchd background jobs from reading `~/Documents`, so the scheduled runs silently failed there.
+Files recurring Baltimore 311 service requests on a schedule, by driving the
+public request form with Playwright.
 
-Submits two Baltimore 311 "Dirty Alley Cleaning" requests every Monday and Thursday at 11:30 AM via Playwright at https://balt311.baltimorecity.gov/citizen/s/.
+Baltimore had a public API for this and retired it. This is what filing a
+request programmatically takes now — kept here as a working reference for
+anyone automating a service that should have an API and doesn't.
+
+Portal: https://balt311.baltimorecity.gov/citizen/s/
 
 ## Why a browser, and not an API
 
@@ -95,6 +100,10 @@ node submit.js --dry-run        # fill everything but stop before Submit (combin
 ```
 
 ## Schedule
+
+Keep the project outside `~/Documents`. macOS blocks launchd background jobs
+from reading that folder, so scheduled runs fail there silently.
+
 Runs via launchd (not cron — crontab is blocked by macOS permissions in this setup):
 `~/Library/LaunchAgents/com.example.trash311.plist` triggers `run.sh` at every login (RunAtLoad) and at Mon/Thu 11:30 AM. The wrapper tracks the last covered Monday and Thursday in `logs/last-run-{1,4}.txt` and submits any slot whose most recent occurrence hasn't run yet — so a day missed while the laptop was off or logged out is caught up at the next login, and nothing double-submits. A failed run leaves the state file untouched and retries at the next trigger.
 
